@@ -1,0 +1,26 @@
+basic:
+  user: d15f87f1b8d024bac1eb4cdcd6c973a2
+  password: $2a$10$jzj0EZEH.WDAfTU4vG9H8erCzolPfnMDPbrq4icM.pjjriypDDCmS
+server:
+  servlet:
+    context-path: /api
+  port: 8080
+spring:
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:genericCode
+    username: sa
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  activemq:
+    user:
+logging:
+  level:
+    org.springframework.security: DEBUG
