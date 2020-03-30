@@ -1,5 +1,7 @@
 package com.filipe.leao.cadastro.service;
 
+import com.filipe.leao.cadastro.exception.CPFRegisteredException;
+import com.filipe.leao.cadastro.exception.PersonNotFoundException;
 import com.filipe.leao.cadastro.model.dto.PersonDTO;
 import com.filipe.leao.cadastro.model.pojo.Person;
 import com.filipe.leao.cadastro.repository.PersonRepository;
@@ -9,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PersonService {
@@ -17,7 +18,11 @@ public class PersonService {
     @Autowired
     PersonRepository personRepository;
 
-    public void save(PersonDTO personDTO) {
+    public void save(PersonDTO personDTO) throws CPFRegisteredException {
+
+        if (personRepository.findByCpfAndRemovedDateIsNull(personDTO.getCpf()).isPresent()) {
+            throw new CPFRegisteredException();
+        }
 
         personRepository.save(Person.builder()
                 .naturalness(personDTO.getNaturalness())
@@ -35,29 +40,28 @@ public class PersonService {
         return (List<PersonInterface>) personRepository.findAllByRemovedDateIsNull(PersonInterface.class);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id) throws PersonNotFoundException {
 
-        Optional<Person> personOptional = personRepository.findByIdAndRemovedDateIsNull(id);
+        Person person = personRepository.findByIdAndRemovedDateIsNull(id)
+                .orElseThrow(PersonNotFoundException::new);
 
-        Person person = personOptional.get();
         person.setRemovedDate(LocalDateTime.now());
 
         personRepository.save(person);
     }
 
-    public void update(Long id, PersonDTO personDTO) {
+    public void update(Long id, PersonDTO personDTO) throws PersonNotFoundException {
 
-//        personRepository.findById(id).orElseThrow()
+        Person person = personRepository.findById(id)
+                .orElseThrow(PersonNotFoundException::new);
 
-        personRepository.save(Person.builder()
-                .naturalness(personDTO.getNaturalness())
-                .cpf(personDTO.getCpf())
-                .name(personDTO.getName())
-                .nationality(personDTO.getNationality())
-                .gender(personDTO.getGender())
-                .dateOfBirth(personDTO.getDateOfBirth())
-                .dateOfBirth(personDTO.getDateOfBirth())
-                .build()
-        );
+        person.setCpf(personDTO.getCpf());
+        person.setName(personDTO.getName());
+        person.setNationality(personDTO.getNationality());
+        person.setNaturalness(personDTO.getNaturalness());
+        person.setGender(personDTO.getGender());
+        person.setDateOfBirth(personDTO.getDateOfBirth());
+
+        personRepository.save(person);
     }
 }

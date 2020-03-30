@@ -7,9 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -19,14 +17,11 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class BaseEntity {
 
-    @Column(name = "created_at")
     @CreationTimestamp
     protected LocalDateTime creationDate;
 
-    @Column(name = "last_updated_at")
     @UpdateTimestamp
     protected LocalDateTime updateDate;
 
-    @Column(name = "removed_at")
     protected LocalDateTime removedDate;
 }

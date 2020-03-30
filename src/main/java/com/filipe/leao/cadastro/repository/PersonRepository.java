@@ -10,5 +10,7 @@ public interface PersonRepository extends CrudRepository<Person, Long> {
 
     Optional<Person> findByIdAndRemovedDateIsNull(Long id);
 
+    Optional<Person> findByCpfAndRemovedDateIsNull(String cpf);
+
     <T> Collection<T> findAllByRemovedDateIsNull(Class<T> type);
 }

@@ -1,5 +1,7 @@
 package com.filipe.leao.cadastro.controller;
 
+import com.filipe.leao.cadastro.exception.CPFRegisteredException;
+import com.filipe.leao.cadastro.exception.PersonNotFoundException;
 import com.filipe.leao.cadastro.model.dto.PersonDTO;
 import com.filipe.leao.cadastro.repository.interfaces.PersonInterface;
 import com.filipe.leao.cadastro.service.PersonService;
@@ -28,7 +30,11 @@ public class PersonController {
             return Response.noContent().build();
         }
 
-        personService.save(person);
+        try {
+            personService.save(person);
+        } catch (CPFRegisteredException e) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
         return Response.ok().build();
     }
 
@@ -38,7 +44,11 @@ public class PersonController {
         if (Objects.isNull(person) || Objects.isNull(id)) {
             return Response.noContent().build();
         }
-        personService.update(id, person);
+        try {
+            personService.update(id, person);
+        } catch (PersonNotFoundException e) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
 
         return Response.ok().build();
     }
@@ -49,8 +59,14 @@ public class PersonController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable Long id) {
-        personService.delete(id);
+    public Response delete(@PathVariable Long id) {
+        try {
+            personService.delete(id);
+        } catch (PersonNotFoundException e) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE).build();
+        }
+
+        return Response.ok().build();
     }
 }
 

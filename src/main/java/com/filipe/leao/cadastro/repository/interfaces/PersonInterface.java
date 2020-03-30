@@ -4,8 +4,12 @@ import com.filipe.leao.cadastro.model.enums.GenderEnum;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 public interface PersonInterface {
+
+    @Value("#{target.uuid}")
+    UUID getUUID();
 
     @Value("#{target.cnpjcpf}")
     String getCpf();
