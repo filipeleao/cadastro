@@ -58,10 +58,10 @@ public class PersonController {
         return personService.all();
     }
 
-    @DeleteMapping("/delete/{id}")
-    public Response delete(@PathVariable Long id) {
+    @DeleteMapping("/delete/{cpf}")
+    public Response delete(@PathVariable String cpf) {
         try {
-            personService.delete(id);
+            personService.delete(cpf);
         } catch (PersonNotFoundException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }

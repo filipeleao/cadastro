@@ -4,20 +4,16 @@ import com.filipe.leao.cadastro.model.enums.GenderEnum;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 public interface PersonInterface {
 
-    @Value("#{target.uuid}")
-    UUID getUUID();
-
-    @Value("#{target.cnpjcpf}")
+    @Value("#{target.cpf}")
     String getCpf();
 
     @Value("#{target.name}")
     String getName();
 
-    @Value("#{target.date_of_birth}")
+    @Value("#{target.dateOfBirth}")
     LocalDate getDateOfBirth();
 
     @Value("#{target.email}")

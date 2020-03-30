@@ -40,9 +40,9 @@ public class PersonService {
         return (List<PersonInterface>) personRepository.findAllByRemovedDateIsNull(PersonInterface.class);
     }
 
-    public void delete(Long id) throws PersonNotFoundException {
+    public void delete(String cpf) throws PersonNotFoundException {
 
-        Person person = personRepository.findByIdAndRemovedDateIsNull(id)
+        Person person = personRepository.findByCpfAndRemovedDateIsNull(cpf)
                 .orElseThrow(PersonNotFoundException::new);
 
         person.setRemovedDate(LocalDateTime.now());
