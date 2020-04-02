@@ -38,14 +38,14 @@ public class PersonController {
         return Response.ok().build();
     }
 
-    @PutMapping("/update/{id}")
-    public Response update(@PathVariable Long id, @Valid @RequestBody PersonDTO person) {
+    @PutMapping("/update/{cpf}")
+    public Response update(@PathVariable String cpf, @Valid @RequestBody PersonDTO person) {
 
-        if (Objects.isNull(person) || Objects.isNull(id)) {
+        if (Objects.isNull(person) || Objects.isNull(cpf)) {
             return Response.noContent().build();
         }
         try {
-            personService.update(id, person);
+            personService.update(cpf, person);
         } catch (PersonNotFoundException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE).build();
         }

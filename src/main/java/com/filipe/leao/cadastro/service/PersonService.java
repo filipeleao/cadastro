@@ -32,6 +32,7 @@ public class PersonService {
                 .gender(personDTO.getGender())
                 .dateOfBirth(personDTO.getDateOfBirth())
                 .dateOfBirth(personDTO.getDateOfBirth())
+                .email(personDTO.getEmail())
                 .build()
         );
     }
@@ -50,9 +51,9 @@ public class PersonService {
         personRepository.save(person);
     }
 
-    public void update(Long id, PersonDTO personDTO) throws PersonNotFoundException {
+    public void update(String cpf, PersonDTO personDTO) throws PersonNotFoundException {
 
-        Person person = personRepository.findById(id)
+        Person person = personRepository.findByCpfAndRemovedDateIsNull(cpf)
                 .orElseThrow(PersonNotFoundException::new);
 
         person.setCpf(personDTO.getCpf());
